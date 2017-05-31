@@ -12,6 +12,8 @@ public class WorldFilterJson_Structure {
 	private volatile long distance;
 	private volatile String structure;
 	private volatile int minimum;
+	private volatile int clusterSize;
+	private volatile int clusterDistance;
 
 	@GsonConstructor
 	public WorldFilterJson_Structure() {
@@ -27,6 +29,6 @@ public class WorldFilterJson_Structure {
 	}
 
 	public WorldFilter_Structure createStructureFilter() {
-		return new WorldFilter_Structure(distance, DefaultWorldIconTypes.getByName(structure), minimum);
+		return new WorldFilter_Structure(distance, DefaultWorldIconTypes.getByName(structure), minimum, clusterSize, clusterDistance);
 	}
 }

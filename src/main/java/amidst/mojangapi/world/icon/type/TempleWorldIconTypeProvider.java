@@ -20,7 +20,7 @@ public class TempleWorldIconTypeProvider implements WorldIconTypeProvider<Void> 
 	public DefaultWorldIconTypes get(int chunkX, int chunkY, Void additionalData) {
 		try {
 			Biome biome = biomeDataOracle.getBiomeAtMiddleOfChunk(chunkX, chunkY);
-			if (biome == Biome.swampland) {
+			if (biome == Biome.swampland || biome == Biome.swamplandM) {
 				return DefaultWorldIconTypes.WITCH;
 			} else if (biome == Biome.jungle || biome == Biome.jungleHills) {
 				return DefaultWorldIconTypes.JUNGLE;

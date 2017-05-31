@@ -3,14 +3,7 @@ package amidst.gui.seedsearcher;
 import java.awt.Color;
 import java.util.Optional;
 
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
+import javax.swing.*;
 import javax.swing.border.LineBorder;
 
 import amidst.AmidstMetaData;
@@ -36,6 +29,8 @@ public class SeedSearcherWindow {
 	private final JTextArea searchQueryTextArea;
 	private final JComboBox<WorldType> worldTypeComboBox;
 	private final JCheckBox searchContinuouslyCheckBox;
+	private final JCheckBox randomCheckBox;
+	private final JTextField seedField;
 	private final JButton searchButton;
 	private final JFrame frame;
 
@@ -49,9 +44,11 @@ public class SeedSearcherWindow {
 		this.dialogs = dialogs;
 		this.worldSwitcher = worldSwitcher;
 		this.seedSearcher = seedSearcher;
+		this.seedField = new JTextField(50);
 		this.searchQueryTextArea = createSearchQueryTextArea();
 		this.worldTypeComboBox = createWorldTypeComboBox();
 		this.searchContinuouslyCheckBox = createSearchContinuouslyCheckBox();
+		this.randomCheckBox = new JCheckBox("search randomly");
 		this.searchButton = createSearchButton();
 		this.frame = createFrame();
 	}
@@ -93,8 +90,9 @@ public class SeedSearcherWindow {
 		result.add(createScrollPane(searchQueryTextArea), "grow, push, wrap");
 		result.add(new JLabel("World Type:"), "growx, pushx, wrap");
 		result.add(worldTypeComboBox, "growx, pushx, wrap");
-		result.add(searchContinuouslyCheckBox, "growx, pushx, wrap");
+		result.add(randomCheckBox, "growx, pushx, wrap");
 		result.add(searchButton, "pushx, wrap");
+		result.add(seedField, "pushx, wrap");
 		result.setSize(800, 600);
 		result.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		return result;
@@ -117,7 +115,7 @@ public class SeedSearcherWindow {
 			if (configuration.isPresent()) {
 				SeedSearcherConfiguration seedSearcherConfiguration = configuration.get();
 				WorldType worldType = seedSearcherConfiguration.getWorldType();
-				seedSearcher.search(seedSearcherConfiguration, worldSeed -> seedFound(worldSeed, worldType));
+				seedSearcher.search(seedSearcherConfiguration, worldSeed -> seedFound(worldSeed, worldType, seedSearcherConfiguration.currentSeed));
 			} else {
 				AmidstLogger.warn("invalid configuration");
 				dialogs.displayError("invalid configuration");
@@ -136,15 +134,27 @@ public class SeedSearcherWindow {
 
 	@CalledOnlyBy(AmidstThread.EDT)
 	private SeedSearcherConfiguration createSeedSearcherConfiguration(WorldFilter worldFilter) {
+		long seed = 0;
+		try
+		{
+			seed = Long.parseLong(seedField.getText());
+		}
+		catch(NumberFormatException ex)
+		{
+			seed = 0;
+		}
 		return new SeedSearcherConfiguration(
 				worldFilter,
 				(WorldType) worldTypeComboBox.getSelectedItem(),
-				searchContinuouslyCheckBox.isSelected());
+				searchContinuouslyCheckBox.isSelected(),
+				randomCheckBox.isSelected(),
+				seed);
 	}
 
 	@CalledOnlyBy(AmidstThread.EDT)
-	private void seedFound(WorldSeed worldSeed, WorldType worldType) {
+	private void seedFound(WorldSeed worldSeed, WorldType worldType, long currentSeed) {
 		worldSwitcher.displayWorld(worldSeed, worldType);
+		seedField.setText(Long.toString(currentSeed));
 		updateGUI();
 	}
 

@@ -88,12 +88,23 @@ public class SeedSearcher {
 	@CalledOnlyBy(AmidstThread.WORKER)
 	private void doSearchOne(ProgressReporter<WorldSeed> reporter, SeedSearcherConfiguration configuration)
 			throws MinecraftInterfaceException {
-		while (!isStopRequested) {
-			World world = mojangApi.createWorldFromSeed(WorldSeed.random(), configuration.getWorldType());
-			if (configuration.getWorldFilter().isValid(world)) {
-				reporter.report(world.getWorldSeed());
-				break;
+
+			while (!isStopRequested)
+			{
+				World world = null;
+				if (configuration.isRandom())
+				{
+					world = mojangApi.createWorldFromSeed(WorldSeed.random(), configuration.getWorldType());
+					configuration.currentSeed = world.getWorldSeed().getLong();
+				} else
+				{
+					world = mojangApi.createWorldFromSeed(WorldSeed.fromSaveGame(configuration.currentSeed++), configuration.getWorldType());
+				}
+				if (configuration.getWorldFilter().isValid(world))
+				{
+					reporter.report(world.getWorldSeed());
+					break;
+				}
 			}
-		}
 	}
 }

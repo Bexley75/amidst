@@ -126,10 +126,12 @@ public enum DefaultVersionFeatures {
 				.init(
 						// this is for the enable all layers function
 						Biome.desert,
+						Biome.desertM,
 						Biome.desertHills,
 						Biome.jungle,
 						Biome.jungleHills,
 						Biome.swampland,
+						Biome.swamplandM,
 						Biome.icePlains,
 						Biome.coldTaiga
 				).since(RecognisedVersion._12w21a,
@@ -139,7 +141,8 @@ public enum DefaultVersionFeatures {
 						Biome.jungle
 				).sinceExtend(RecognisedVersion._1_4_2,
 						Biome.jungleHills, // TODO: jungle temples spawn only since 1.4.2 in jungle hills?
-						Biome.swampland
+						Biome.swampland,
+						Biome.swamplandM
 				).sinceExtend(RecognisedVersion._15w43c,
 						Biome.icePlains,
 						Biome.coldTaiga
