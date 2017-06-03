@@ -1,7 +1,7 @@
 
 //Sample search that satisfies this search:
 //
-//  Find a Dual Which Hut within range of a Desert and a full Mooshroom Island
+//  Find Two witch huts within 100 blocks of eachother with a nearby Desert and Mooshroom Island
 //  or find me a Quad Witch Hut within 1024 blocks
 
 
@@ -46,7 +46,7 @@
     "range": {
       "start" : 144678138084401469,
       "finish" : null,
-      "current" :null
+      "current" : null
     }
   },
   "filters": [
@@ -60,7 +60,8 @@
       "parameters": {
         "structure": "witch",
         "minimum": 1,
-        "clusterSize": 2
+        "cluster": 2,
+        "distance": 100
       },
       "filters": [
         {
@@ -96,7 +97,7 @@
       "parameters": {
         "structure": "witch",
         "minimum": 1,
-        "clusterSize": 4
+        "cluster": 4
       },
       "filters": []
     }
