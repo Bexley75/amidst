@@ -1,0 +1,106 @@
+
+//Sample search that satisfies this search:
+//
+//  Find a Dual Which Hut within range of a Desert and a full Mooshroom Island
+//  or find me a Quad With Hut within 1024 block
+
+
+
+//An operation consists of a search and a collection of filters
+//
+//search:
+//  type: List, Search, Range or Random
+//  seeds : a list of numeric seeds if type is List
+//  text : a list of text seeds if type is Search
+//  range : a start, end and current seed if type is Range
+//          a null finish would mean search to the end
+//          a null start would mean search backwards from finish
+//          otherwise search start to finish, or current to finish
+//          current could be updated at finding a seed or cancelling the search
+//
+
+//filter:
+// join : can be "and" or "or" , would default to and
+// type : the type of filter (structure, biome, etc)
+// location : x/z co-ordinate. Default to nearest parent filter location or Spawn location.
+// distance : the distance from the location to search
+// parameters : The paramters for the filter of the specified type
+// filters : A List if sub filters
+
+//example:
+{
+  "search": {
+    "type": "List",
+    "seeds": [
+      4382283912439341681,
+      4444771357269107313,
+      4931441592001831537,
+      5049661082220307057,
+      7115968886253232753,
+      9211550087864066673
+    ],
+    "text": [
+      "Text Seed Search",
+      "Some other Search Phrase"
+    ],
+    "range": {
+      "start" : 144678138084401469,
+      "finish" : null,
+      "current" :null
+    }
+  },
+  "filters": [
+    {
+      "type": "Structure",
+      "location": {
+        "x": null,
+        "z": null
+      },
+      "distance": 1024,
+      "parameters": {
+        "structure": "witch",
+        "minimum": 1,
+        "clusterSize": 2
+      },
+      "filters": [
+        {
+          "join": "and",
+          "type": "Biome",
+          "distance": 512,
+          "parameters": {
+            "join": "any",
+            "biomes": [
+              "Desert",
+              "Desert M"
+            ]
+          },
+          "filter": []
+        },
+        {
+          "join": "and",
+          "type": "Biome",
+          "distance": 1024,
+          "parameters": {
+            "join": "all",
+            "biomes": [
+              "Mushroom Island",
+              "Mushroom Island M"
+            ]
+          },
+          "filter": []
+        }
+      ]
+    },
+    {
+      "join": "or",
+      "type": "Structure",
+      "distance": 1024,
+      "parameters": {
+        "structure": "witch",
+        "minimum": 1,
+        "clusterSize": 4
+      },
+      "filters": []
+    }
+  ]
+}
