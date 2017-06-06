@@ -6,11 +6,21 @@ import amidst.mojangapi.world.World;
 import amidst.mojangapi.world.coordinates.CoordinatesInWorld;
 import amidst.mojangapi.world.coordinates.Resolution;
 
+import java.util.List;
+
 @Immutable
-public abstract class WorldFilter {
+public class WorldFilter {
 	protected final long worldFilterSize;
 	protected final long quarterFilterSize;
 	protected final CoordinatesInWorld corner;
+
+	private final List<WorldFilter> filters = null;
+
+	public WorldFilter(long worldFilterSize, List<WorldFilter> filters)
+	{
+		this(worldFilterSize);
+		filters = filters;
+	}
 
 	public WorldFilter(long worldFilterSize) {
 		ensureIsMultipleOfFragmentSize(worldFilterSize);
@@ -30,5 +40,12 @@ public abstract class WorldFilter {
 		}
 	}
 
-	public abstract boolean isValid(World world);
+	public boolean isValid(World world) {
+		for (WorldFilter filter : filters) {
+			if (!filter.isValid(world)) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

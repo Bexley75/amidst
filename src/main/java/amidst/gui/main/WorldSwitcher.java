@@ -58,6 +58,16 @@ public class WorldSwitcher {
 	}
 
 	@CalledOnlyBy(AmidstThread.EDT)
+	public void displayWorld(World world) {
+		try {
+			setWorld(world);
+		} catch (IllegalStateException e) {
+			AmidstLogger.warn(e);
+			dialogs.displayError(e);
+		}
+	}
+
+	@CalledOnlyBy(AmidstThread.EDT)
 	public void displayWorld(WorldSeed worldSeed, WorldType worldType) {
 		try {
 			setWorld(mojangApi.createWorldFromSeed(worldSeed, worldType));

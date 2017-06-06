@@ -33,7 +33,7 @@ public class WorldFilter_Structure extends WorldFilter {
 	@Override
 	public boolean isValid(World world) {
 		WorldIconCollector structureCollector = getCollector();
-		procudeAndCollect(getProducer(world), structureCollector);
+		produceAndCollect(getProducer(world), structureCollector);
 		if (clusterSize > 1) {
 			return checkClusterSize(structureCollector.get());
 		} else {
@@ -41,7 +41,7 @@ public class WorldFilter_Structure extends WorldFilter {
 		}
 	}
 
-	private void procudeAndCollect(WorldIconProducer<Void> structureProducer, WorldIconCollector structureCollector) {
+	private void produceAndCollect(WorldIconProducer<Void> structureProducer, WorldIconCollector structureCollector) {
 		for (long x = 0; x < 2 * worldFilterSize; x += 512) {
 			for (long y = 0; y < 2 * worldFilterSize; y += 512) {
 				structureProducer.produce(CoordinatesInWorld.from(x, y).add(corner), structureCollector, null);

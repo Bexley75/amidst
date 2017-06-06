@@ -46,6 +46,10 @@ public class WorldSeed {
 		}
 	}
 
+	public static WorldSeed fromLong(Long seed) {
+		return new WorldSeed(seed, null, WorldSeedType.NUMERIC);
+	}
+
 	public static WorldSeed fromSaveGame(long seed) {
 		return new WorldSeed(seed, null, WorldSeedType.SAVE_GAME);
 	}

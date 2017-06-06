@@ -31,6 +31,118 @@
 {
   "search": {
     "type": "List",
+    "worldType": "Default",
+    "seeds": [
+      4382283912439341681,
+      4444771357269107313,
+      4931441592001831537,
+      5049661082220307057,
+      7115968886253232753,
+      9211550087864066673
+    ],
+    "text": [
+      "Text Seed Search",
+      "Some other Search Phrase"
+    ],
+    "range": {
+      "start": 144678138084401469,
+      "finish": null,
+      "current": null
+    }
+  },
+  "location": {
+    "x": null,
+    "z": null
+  },
+  "filters": [
+    {
+      "type": "Structure",
+      "location": {
+        "x": null,
+        "z": null,
+        "distance": 1024
+      },
+      "parameters": {
+        "structure": "witch",
+        "minimum": 1,
+        "cluster": 2,
+        "distance": 100
+      },
+      "filters": [
+        {
+          "join": "and",
+          "type": "Biome",
+          "location": {
+            "distance": 512
+          },
+          "parameters": {
+            "join": "any",
+            "biomes": [
+              "Desert",
+              "Desert M"
+            ]
+          }
+        },
+        {
+          "join": "and",
+          "type": "Biome",
+          "location": {
+            "distance": 1024
+          },
+          "parameters": {
+            "join": "all",
+            "biomes": [
+              "Mushroom Island",
+              "Mushroom Island M"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "join": "or",
+      "type": "Structure",
+      "location": {
+        "distance": 1024
+      },
+      "parameters": {
+        "structure": "witch",
+        "minimum": 1,
+        "cluster": 4
+      },
+      "filters": []
+    }
+  ]
+}
+
+{
+  "search": {
+    "type": "Range",
+    "worldType" : "Default",
+    "range": { "start" : 144678138084441189, "finish" : null, "current" : null }
+  },
+  "filters": [
+    {
+      "type": "Structure", "location": { "x" : null, "z" : null, "distance": 2048 },
+      "parameters": { "structure": "witch", "minimum": 1, "cluster": 2, "distance": 100 },
+      "filters": [
+        {
+          "join": "and", "type": "Biome", "location": { "distance": 512 },
+          "parameters": { "join": "any", "biomes": [ "Desert", "Desert M" ] }
+        },
+        {
+          "join": "and", "type": "Biome", "location": { "distance": 1024 },
+          "parameters": { "join": "any", "biomes": [ "Mushroom Island", "Mushroom Island M" ]}
+        }
+      ]
+    }
+  ]
+}
+
+{
+  "search": {
+    "type": "List",
+    "worldType" : "Default",
     "seeds": [
       4382283912439341681,
       4444771357269107313,
@@ -49,57 +161,65 @@
       "current" : null
     }
   },
+  "location": {
+    "x": null,
+    "z": null
+  },
   "filters": [
     {
-      "type": "Structure",
+      "type": "Biome",
       "location": {
-        "x": null,
-        "z": null
+        "distance": 512
       },
-      "distance": 1024,
       "parameters": {
-        "structure": "witch",
-        "minimum": 1,
-        "cluster": 2,
-        "distance": 100
-      },
-      "filters": [
-        {
-          "join": "and",
-          "type": "Biome",
-          "distance": 512,
-          "parameters": {
-            "join": "any",
-            "biomes": [
-              "Desert",
-              "Desert M"
-            ]
-          }
-        },
-        {
-          "join": "and",
-          "type": "Biome",
-          "distance": 1024,
-          "parameters": {
-            "join": "all",
-            "biomes": [
-              "Mushroom Island",
-              "Mushroom Island M"
-            ]
-          }
-        }
-      ]
+        "join": "any",
+        "biomes": [
+          "Desert",
+          "Desert M"
+        ]
+      }
     },
     {
-      "join": "or",
-      "type": "Structure",
-      "distance": 1024,
-      "parameters": {
-        "structure": "witch",
-        "minimum": 1,
-        "cluster": 4
+      "join": "and",
+      "type": "Biome",
+      "location": {
+        "distance": 1024
       },
-      "filters": []
+      "parameters": {
+        "join": "all",
+        "biomes": [
+          "Mushroom Island",
+          "Mushroom Island M"
+        ]
+      }
     }
   ]
 }
+
+{
+  "search": {"type": "Range", "worldType" : "Default", "range": { "start" : 144678138085088197, "finish" : null, "current" : null}},
+  "filters": [
+    {"type": "Structure", "location": {"x" : null, "z" : null, "distance": 2048}, "parameters": {"structure": "witch", "minimum": 1, "cluster": 2, "distance": 180},
+      "filters": [
+        {"join": "and", "type": "Biome", "location": {"distance": 1024}, "parameters": {"join": "any", "biomes": ["Desert", "Desert M"]}},
+        {"join": "and", "type": "Biome", "location": {"distance": 1024}, "parameters": {"join": "any", "biomes": ["Mushroom Island", "Mushroom Island M"]}},
+        {"join": "and", "type": "Biome", "location": {"distance": 1024}, "parameters": {"join": "any", "biomes": ["Flower Forest"]}}
+      ]
+    }
+  ]
+}
+//simpler example
+{
+  "search": {"type": "Range", "worldType" : "Default", "range": { "start" : 144678138084483661, "finish" : null, "current" : null}},
+  "filters": [
+    {"type": "Structure", "location": {"x" : null, "z" : null, "distance": 2048}, "parameters": {"structure": "witch", "minimum": 1, "cluster": 2, "distance": 100},
+      "filters": [
+        {"join": "and", "type": "Biome", "location": {"distance": 512}, "parameters": {"join": "any", "biomes": ["Desert", "Desert M"]}},
+        {"join": "and", "type": "Biome", "location": {"distance": 1024}, "parameters": {"join": "any", "biomes": ["Mushroom Island", "Mushroom Island M"]}}
+      ]
+    }
+  ]
+}
+
+,
+

@@ -71,7 +71,7 @@ public class PerMainWindowInjector {
 				this::getMenuBar);
 		if (FeatureToggles.SEED_SEARCH) {
 			this.seedSearcher = new SeedSearcher(dialogs, mojangApi, threadMaster.getWorkerExecutor());
-			this.seedSearcherWindow = new SeedSearcherWindow(metadata, dialogs, worldSwitcher, seedSearcher);
+			this.seedSearcherWindow = new SeedSearcherWindow(metadata, dialogs, worldSwitcher, seedSearcher, viewerFacadeReference::get);
 		} else {
 			this.seedSearcher = null;
 			this.seedSearcherWindow = null;

@@ -172,7 +172,7 @@ public class BiomeDataOracle {
 		return getBiomeData(x, y, width, height, false);
 	}
 
-	private int[] getBiomeData(int x, int y, int width, int height, boolean useQuarterResolution)
+	public int[] getBiomeData(int x, int y, int width, int height, boolean useQuarterResolution)
 			throws MinecraftInterfaceException {
 		return minecraftInterface.getBiomeData(x, y, width, height, useQuarterResolution);
 	}

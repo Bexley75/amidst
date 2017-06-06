@@ -9,8 +9,8 @@ import amidst.gui.main.MainWindowDialogs;
 import amidst.logging.AmidstLogger;
 import amidst.mojangapi.MojangApi;
 import amidst.mojangapi.minecraftinterface.MinecraftInterfaceException;
-import amidst.mojangapi.world.World;
-import amidst.mojangapi.world.WorldSeed;
+import amidst.seedSearch.SearchFilter;
+import amidst.seedSearch.SearchResult;
 import amidst.threading.WorkerExecutor;
 import amidst.threading.worker.ProgressReporter;
 import amidst.threading.worker.ProgressReportingWorker;
@@ -32,15 +32,15 @@ public class SeedSearcher {
 	}
 
 	@CalledOnlyBy(AmidstThread.EDT)
-	public void search(SeedSearcherConfiguration configuration, Consumer<WorldSeed> onWorldSeedFound) {
+	public void search(SearchFilter searchFilter, Consumer<SearchResult> onSearchResult) {
 		this.isSearching = true;
 		this.isStopRequested = false;
-		workerExecutor.run(createSearcher(configuration), onWorldSeedFound);
+		workerExecutor.run(createSearcher(searchFilter), onSearchResult);
 	}
 
 	@CalledOnlyBy(AmidstThread.EDT)
-	private ProgressReportingWorker<WorldSeed> createSearcher(SeedSearcherConfiguration configuration) {
-		return reporter -> this.trySearch(reporter, configuration);
+	private ProgressReportingWorker<SearchResult> createSearcher(SearchFilter searchFilter) {
+		return reporter -> this.trySearch(reporter, searchFilter);
 	}
 
 	@CalledOnlyBy(AmidstThread.EDT)
@@ -64,9 +64,9 @@ public class SeedSearcher {
 	}
 
 	@CalledOnlyBy(AmidstThread.WORKER)
-	private void trySearch(ProgressReporter<WorldSeed> reporter, SeedSearcherConfiguration configuration) {
+	private void trySearch(ProgressReporter<SearchResult> reporter, SearchFilter searchFilter) {
 		try {
-			doSearch(reporter, configuration);
+			doSearch(reporter, searchFilter);
 		} catch (IllegalStateException | MinecraftInterfaceException e) {
 			AmidstLogger.warn(e);
 			dialogs.displayError(e);
@@ -77,34 +77,27 @@ public class SeedSearcher {
 	}
 
 	@CalledOnlyBy(AmidstThread.WORKER)
-	private void doSearch(ProgressReporter<WorldSeed> reporter, SeedSearcherConfiguration configuration)
+	private void doSearch(ProgressReporter<SearchResult> reporter, SearchFilter searchFilter)
 			throws IllegalStateException,
 			MinecraftInterfaceException {
-		do {
-			doSearchOne(reporter, configuration);
-		} while (configuration.isSearchContinuously() && !isStopRequested);
+		while (!isStopRequested && doSearchOne(reporter, searchFilter))
+		{
+		}
 	}
 
 	@CalledOnlyBy(AmidstThread.WORKER)
-	private void doSearchOne(ProgressReporter<WorldSeed> reporter, SeedSearcherConfiguration configuration)
+	private boolean doSearchOne(ProgressReporter<SearchResult> reporter, SearchFilter searchFilter)
 			throws MinecraftInterfaceException {
 
-			while (!isStopRequested)
+		while (!isStopRequested)
+		{
+			SearchResult searchResult = searchFilter.search(mojangApi);
+			reporter.report(searchResult);
+			if(searchResult.worldSeed == null)
 			{
-				World world = null;
-				if (configuration.isRandom())
-				{
-					world = mojangApi.createWorldFromSeed(WorldSeed.random(), configuration.getWorldType());
-					configuration.currentSeed = world.getWorldSeed().getLong();
-				} else
-				{
-					world = mojangApi.createWorldFromSeed(WorldSeed.fromSaveGame(configuration.currentSeed++), configuration.getWorldType());
-				}
-				if (configuration.getWorldFilter().isValid(world))
-				{
-					reporter.report(world.getWorldSeed());
-					break;
-				}
+				return false;
 			}
+		}
+		return true;
 	}
 }
